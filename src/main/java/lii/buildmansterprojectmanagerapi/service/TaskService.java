@@ -5,6 +5,8 @@ import lii.buildmansterprojectmanagerapi.dto.response.TaskResponse;
 import lii.buildmansterprojectmanagerapi.entity.jpa.Developer;
 import lii.buildmansterprojectmanagerapi.entity.jpa.Project;
 import lii.buildmansterprojectmanagerapi.entity.jpa.Task;
+import lii.buildmansterprojectmanagerapi.exception.DeveloperNotFoundException;
+import lii.buildmansterprojectmanagerapi.exception.ProjectNotFoundException;
 import lii.buildmansterprojectmanagerapi.exception.ResourceNotFoundException;
 import lii.buildmansterprojectmanagerapi.repository.jpa.DeveloperRepository;
 import lii.buildmansterprojectmanagerapi.repository.jpa.ProjectRepository;
@@ -24,12 +26,12 @@ public class TaskService {
 
     public TaskResponse create(TaskRequest request) {
         Project project = projectRepository.findById(request.getProjectId())
-                .orElseThrow(() -> new RuntimeException("Project not found"));
+                .orElseThrow(() -> new ProjectNotFoundException("Project not found"));
 
         Developer developer = null;
         if (request.getDeveloperId() != null) {
             developer = developerRepository.findById(request.getDeveloperId())
-                    .orElseThrow(() -> new RuntimeException("Developer not found"));
+                    .orElseThrow(() -> new DeveloperNotFoundException("Developer not found"));
         }
 
         Task task = Task.builder()
