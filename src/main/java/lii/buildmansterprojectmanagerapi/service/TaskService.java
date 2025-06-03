@@ -54,6 +54,19 @@ public class TaskService {
                 .build();
     }
 
+    public List<TaskResponse> getAll() {
+        return taskRepository.findAll()
+                .stream()
+                .map(t -> TaskResponse.builder()
+                .id(t.getId())
+                .title(t.getTitle())
+                .description(t.getDescription())
+                .dueDate(t.getDueDate())
+                .status(t.getStatus())
+                .build())
+                .toList();
+    }
+
     public List<TaskResponse> getByProject(Long projectId) {
         return taskRepository.findByProjectId(projectId).stream()
                 .map(t -> TaskResponse.builder()
