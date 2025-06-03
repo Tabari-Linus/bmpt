@@ -42,6 +42,6 @@ public class DeveloperController {
     public ResponseEntity<DeveloperResponse> updateDeveloper(
             @PathVariable Long id,
             @RequestBody DeveloperRequest request) {
-        return ResponseEntity.ok(developerService.updatedeveloper(id, request));
+        return ResponseEntity.ok(developerService.updateDeveloper(id, request));
     }
 }
