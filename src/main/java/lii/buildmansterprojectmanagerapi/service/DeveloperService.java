@@ -64,12 +64,16 @@ public class DeveloperService {
 
     @Transactional
     public void delete(Long id) {
+
+        if (!developerRepository.existsById(id)) {
+            throw new DeveloperNotFoundException(id);
+        }
         developerRepository.deleteById(id);
     }
 
     public DeveloperResponse updatedeveloper(Long id, DeveloperRequest request) {
         Developer developer = developerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Developer not found"));
+                .orElseThrow(() -> new DeveloperNotFoundException(id));
 
         developer.setDeveloperName(request.getDeveloperName());
         developer.setDeveloperEmail(request.getDeveloperEmail());
