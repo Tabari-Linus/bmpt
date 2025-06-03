@@ -8,6 +8,7 @@ import lii.buildmansterprojectmanagerapi.entity.jpa.Task;
 import lii.buildmansterprojectmanagerapi.exception.DeveloperNotFoundException;
 import lii.buildmansterprojectmanagerapi.exception.ProjectNotFoundException;
 import lii.buildmansterprojectmanagerapi.exception.ResourceNotFoundException;
+import lii.buildmansterprojectmanagerapi.exception.TaskNotFoundException;
 import lii.buildmansterprojectmanagerapi.repository.jpa.DeveloperRepository;
 import lii.buildmansterprojectmanagerapi.repository.jpa.ProjectRepository;
 import lii.buildmansterprojectmanagerapi.repository.jpa.TaskRepository;
@@ -99,7 +100,7 @@ public class TaskService {
 
     public TaskResponse updateTask(Long id, TaskRequest request) {
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+                .orElseThrow(() -> new TaskNotFoundException(id));
 
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
@@ -108,13 +109,13 @@ public class TaskService {
 
         if (request.getProjectId() != null) {
             Project project = projectRepository.findById(request.getProjectId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Project not found"));
+                    .orElseThrow(() -> new ProjectNotFoundException(request.getProjectId()));
             task.setProject(project);
         }
 
         if (request.getDeveloperId() != null) {
             Developer dev = developerRepository.findById(request.getDeveloperId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Developer not found"));
+                    .orElseThrow(() -> new DeveloperNotFoundException(request.getDeveloperId()));
             task.setDeveloper(dev);
         }
 
