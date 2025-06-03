@@ -1,0 +1,86 @@
+package lii.buildmansterprojectmanagerapi.service;
+
+
+import jakarta.transaction.Transactional;
+import lii.buildmansterprojectmanagerapi.dto.request.DeveloperRequest;
+import lii.buildmansterprojectmanagerapi.dto.response.DeveloperResponse;
+import lii.buildmansterprojectmanagerapi.entity.jpa.Developer;
+import lii.buildmansterprojectmanagerapi.exception.DeveloperAlreadyExistsException;
+import lii.buildmansterprojectmanagerapi.exception.ResourceNotFoundException;
+import lii.buildmansterprojectmanagerapi.repository.jpa.DeveloperRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class DeveloperService {
+
+    private final DeveloperRepository developerRepository;
+
+    public DeveloperResponse createDeveloper(DeveloperRequest request) {
+        if (developerRepository.existsByDeveloperEmail(request.getDeveloperEmail())) {
+            throw new DeveloperAlreadyExistsException(request.getDeveloperEmail());
+        }
+        Developer developer = Developer.builder()
+                .developerName(request.getDeveloperName())
+                .developerEmail(request.getDeveloperEmail())
+                .developerSkills(request.getDeveloperSkills())
+                .build();
+
+        Developer saved = developerRepository.save(developer);
+
+        return DeveloperResponse.builder()
+                .id(saved.getId())
+                .developerName(saved.getDeveloperName())
+                .developerEmail(saved.getDeveloperEmail())
+                .developerSkills(saved.getDeveloperSkills())
+                .build();
+    }
+
+    public List<DeveloperResponse> findAll() {
+        return developerRepository.findAll().stream()
+                .map(d -> DeveloperResponse.builder()
+                        .id(d.getId())
+                        .developerName(d.getDeveloperName())
+                        .developerEmail(d.getDeveloperEmail())
+                        .developerSkills(d.getDeveloperSkills())
+                        .build())
+                .toList();
+    }
+
+    public DeveloperResponse findById(Long id) {
+        Developer dev = developerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Developer not found"));
+        return DeveloperResponse.builder()
+                .id(dev.getId())
+                .developerName(dev.getDeveloperName())
+                .developerEmail(dev.getDeveloperEmail())
+                .developerSkills(dev.getDeveloperSkills())
+                .build();
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        developerRepository.deleteById(id);
+    }
+
+    public DeveloperResponse updatedeveloper(Long id, DeveloperRequest request) {
+        Developer developer = developerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Developer not found"));
+
+        developer.setDeveloperName(request.getDeveloperName());
+        developer.setDeveloperEmail(request.getDeveloperEmail());
+        developer.setDeveloperSkills(request.getDeveloperSkills());
+
+        Developer updated = developerRepository.save(developer);
+        return DeveloperResponse.builder()
+                .id(updated.getId())
+                .developerName(updated.getDeveloperName())
+                .developerEmail(updated.getDeveloperEmail())
+                .developerSkills(updated.getDeveloperSkills())
+                .build();
+    }
+
+}

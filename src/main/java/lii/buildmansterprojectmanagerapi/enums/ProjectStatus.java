@@ -1,4 +1,4 @@
-package lii.buildmanstertaskmanagerapi.enums;
+package lii.buildmansterprojectmanagerapi.enums;
 
 public enum ProjectStatus {
     PLANNING, IN_PROGRESS, COMPLETED, IN_REVIEW, CANCELLED;

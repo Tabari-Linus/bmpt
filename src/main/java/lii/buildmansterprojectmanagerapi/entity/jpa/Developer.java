@@ -1,13 +1,13 @@
-package lii.buildmanstertaskmanagerapi.entity.jpa;
+package lii.buildmansterprojectmanagerapi.entity.jpa;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 
 import java.util.List;
 import java.util.Set;
@@ -24,15 +24,17 @@ public class Developer {
     private Long id;
 
     @NotBlank
-    private String name;
+    private String developerName;
 
     @Email
     @Column(unique = true)
-    private String email;
+    @NotBlank
+    private String developerEmail;
 
     @ElementCollection
-    private Set<String> roles;
+    @NotEmpty
+    private Set<String> developerSkills;
 
     @OneToMany(mappedBy = "developer")
-    private List<Task> tasks;
+    private List<Task> developerTasks;
 }

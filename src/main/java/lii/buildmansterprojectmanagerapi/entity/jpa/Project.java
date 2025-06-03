@@ -1,8 +1,8 @@
-package lii.buildmanstertaskmanagerapi.entity.jpa;
+package lii.buildmansterprojectmanagerapi.entity.jpa;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lii.buildmanstertaskmanagerapi.enums.ProjectStatus;
+import lii.buildmansterprojectmanagerapi.enums.ProjectStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +23,7 @@ public class Project {
     private Long id;
 
     @NotBlank
-    private String name;
+    private String title;
 
     @Column
     private String description;

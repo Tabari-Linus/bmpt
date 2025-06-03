@@ -1,13 +1,12 @@
-package lii.buildmanstertaskmanagerapi.entity.jpa;
+package lii.buildmansterprojectmanagerapi.entity.jpa;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lii.buildmanstertaskmanagerapi.enums.TaskStatus;
+import lii.buildmansterprojectmanagerapi.enums.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.usertype.BaseUserTypeSupport;
 
 import java.time.LocalDate;
 
@@ -23,7 +22,7 @@ public class Task {
     private Long id;
 
     @NotBlank
-    private String name;
+    private String title;
 
     private String description;
 
