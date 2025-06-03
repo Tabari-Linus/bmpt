@@ -99,4 +99,14 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(DeveloperNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleDeveloperNotFound(DeveloperNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                "NOT_FOUND",
+                ex.getMessage(),
+                Instant.now()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
 }
