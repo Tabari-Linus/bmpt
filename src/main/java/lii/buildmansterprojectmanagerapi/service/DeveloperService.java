@@ -6,6 +6,7 @@ import lii.buildmansterprojectmanagerapi.dto.request.DeveloperRequest;
 import lii.buildmansterprojectmanagerapi.dto.response.DeveloperResponse;
 import lii.buildmansterprojectmanagerapi.entity.jpa.Developer;
 import lii.buildmansterprojectmanagerapi.exception.DeveloperAlreadyExistsException;
+import lii.buildmansterprojectmanagerapi.exception.DeveloperNotFoundException;
 import lii.buildmansterprojectmanagerapi.exception.ResourceNotFoundException;
 import lii.buildmansterprojectmanagerapi.repository.jpa.DeveloperRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,7 @@ public class DeveloperService {
 
     public DeveloperResponse findById(Long id) {
         Developer dev = developerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Developer not found"));
+                .orElseThrow(() -> new DeveloperNotFoundException(id));
         return DeveloperResponse.builder()
                 .id(dev.getId())
                 .developerName(dev.getDeveloperName())
