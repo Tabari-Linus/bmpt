@@ -71,7 +71,7 @@ public class DeveloperService {
         developerRepository.deleteById(id);
     }
 
-    public DeveloperResponse updatedeveloper(Long id, DeveloperRequest request) {
+    public DeveloperResponse updateDeveloper(Long id, DeveloperRequest request) {
         Developer developer = developerRepository.findById(id)
                 .orElseThrow(() -> new DeveloperNotFoundException(id));
 
