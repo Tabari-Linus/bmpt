@@ -10,6 +10,8 @@ import lii.buildmansterprojectmanagerapi.exception.DeveloperNotFoundException;
 import lii.buildmansterprojectmanagerapi.exception.ResourceNotFoundException;
 import lii.buildmansterprojectmanagerapi.repository.jpa.DeveloperRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -87,5 +89,16 @@ public class DeveloperService {
                 .developerSkills(updated.getDeveloperSkills())
                 .build();
     }
+
+    public Page<DeveloperResponse> getAllDevelopers(Pageable pageable) {
+        return developerRepository.findAll(pageable)
+                .map(dev -> DeveloperResponse.builder()
+                        .id(dev.getId())
+                        .developerName(dev.getDeveloperName())
+                        .developerEmail(dev.getDeveloperEmail())
+                        .developerSkills(dev.getDeveloperSkills())
+                        .build());
+    }
+
 
 }
