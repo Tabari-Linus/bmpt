@@ -7,6 +7,9 @@ import lii.buildmansterprojectmanagerapi.dto.response.ProjectResponse;
 import lii.buildmansterprojectmanagerapi.enums.ProjectStatus;
 import lii.buildmansterprojectmanagerapi.service.ProjectService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,6 +57,15 @@ public class ProjectController {
             @PathVariable Long id,
             @RequestParam(required = false) ProjectStatus status) {
         return ResponseEntity.ok(projectService.updateProjectStatus(id, status));
+    }
+
+    @GetMapping("/projects")
+    public Page<ProjectResponse> getAllProjects(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "deadline") String sortBy
+    ) {
+        return projectService.getAllProjects(PageRequest.of(page, size, Sort.by(sortBy)));
     }
 
 }
