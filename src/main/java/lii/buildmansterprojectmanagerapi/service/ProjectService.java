@@ -9,6 +9,8 @@ import lii.buildmansterprojectmanagerapi.exception.ProjectNotFoundException;
 import lii.buildmansterprojectmanagerapi.exception.ResourceNotFoundException;
 import lii.buildmansterprojectmanagerapi.repository.jpa.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -104,6 +106,18 @@ public class ProjectService {
                 .status(updated.getProjectStatus())
                 .build();
     }
+
+    public Page<ProjectResponse> getAllProjects(Pageable pageable) {
+        return projectRepository.findAll(pageable)
+                .map(project -> ProjectResponse.builder()
+                        .id(project.getId())
+                        .title(project.getTitle())
+                        .description(project.getDescription())
+                        .deadline(project.getDeadline())
+                        .status(project.getProjectStatus())
+                        .build());
+    }
+
 
 }
 
