@@ -5,6 +5,9 @@ import lii.buildmansterprojectmanagerapi.dto.request.DeveloperRequest;
 import lii.buildmansterprojectmanagerapi.dto.response.DeveloperResponse;
 import lii.buildmansterprojectmanagerapi.service.DeveloperService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,4 +47,14 @@ public class DeveloperController {
             @RequestBody DeveloperRequest request) {
         return ResponseEntity.ok(developerService.updateDeveloper(id, request));
     }
+
+    @GetMapping("/developers")
+    public Page<DeveloperResponse> getAllDevelopers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortBy
+    ) {
+        return developerService.getAllDevelopers(PageRequest.of(page, size, Sort.by(sortBy)));
+    }
+
 }
